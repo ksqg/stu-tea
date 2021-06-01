@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.TeacherDao">
+
+    <select id="findTeaByName" parameterType="String" resultMap="teacher">
+        SELECT * FROM teacher t inner join student s on s.t_id=t.tid where t.tname = #{tname}
+    </select>
+    <resultMap id="teacher" type="com.example.demo.entity.Teacher">
+        <id column="tid" property="tid"></id>
+        <result column="tname" property="tname"></result>
+        <collection property="student" ofType="com.example.demo.entity.Student">
+            <id column="id" property="id"></id>
+            <result column="name" property="name"></result>
+        </collection>
+
+    </resultMap>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.StudentDao">
+
+    <select id="showAll"  resultType="com.example.demo.entity.Student">
+        SELECT * FROM student
+    </select>
+
+    <insert id="insertStu" parameterType="com.example.demo.entity.Student">
+        INSERT into student values(#{id},#{name})
+    </insert>
+
+    <update id="updateStu">
+        update student set
+            name = #{name}
+        where id = #{id}
+    </update>
+<!--实际开发 数据只要入库就不能删除-->
+    <delete id="deleteStu" parameterType="int">
+        delete from student where id = #{id}
+    </delete>
+    <select id="findStuByName" resultType="com.example.demo.entity.Student" parameterType="String">
+        SELECT * FROM student where name = #{name}
+    </select>
+
+    <select id="findTeaByStuName" parameterType="String" resultMap="student">
+        SELECT * FROM teacher t inner join student s on s.t_id=t.tid where s.name = #{name}
+    </select>
+    <resultMap id="student" type="com.example.demo.entity.Student">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+<!--        一对一-->
+        <association property="teachers" javaType="com.example.demo.entity.Teacher">
+            <id column="tid" property="tid"></id>
+            <result column="tname" property="tname"></result>
+        </association>
+
+    </resultMap>
+</mapper>
